@@ -1,7 +1,7 @@
 require "./character.rb"
 
 class Monster < Character
-  attr_accessor :name
+attr_accessor :name
 
   POWER_UP = 1.5
   HP_HALF = 0.5

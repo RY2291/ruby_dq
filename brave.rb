@@ -4,13 +4,12 @@ class Brave < Character
   SP_ATTACK_CONST = 1.5
 
   def attack(monster)
-    p "#{@name}の攻撃"
-
     attack_type = decision_attack_type
     damage = calculate_damage(target: monster, attack_type: attack_type)
     cause_damage(target: monster, damage: damage)
 
-    p "#{monster.name}のHPは#{monster.hp}だ"
+    attack_message(attack_type: attack_type)
+    damage_message(target: monster, damage: damage)
   end
 
 
@@ -19,10 +18,10 @@ class Brave < Character
   def decision_attack_type
     attack_num = rand(4)
     if attack_num == 0
-      p "会心の一撃"
+      # p "会心の一撃"
       "special_attack"
     else
-      p "通常攻撃"
+      # p "通常攻撃"
       "nomal_attack"
     end
   end
@@ -46,7 +45,7 @@ class Brave < Character
 
     target.hp = 0 if target.hp < 0
 
-    puts "#{target.name}は#{damage}のダメージを受けた"
+    # puts "#{target.name}は#{damage}のダメージを受けた"
   end
 
   def calculate_sp_attack

@@ -1,9 +1,10 @@
-
+require './message_dialog'
 
 class GamesController
+  include MessageDialog
+
   EXP_CONS = 2
   GOLD_CONS = 3
-
 
   def battle(**params)
     build_characters(params)
@@ -11,12 +12,11 @@ class GamesController
     loop do
       @brave.attack(@monster) 
       break if battle_end?
-  
       @monster.attack(@brave)
       break if battle_end?
-
-      battle_judgement
     end
+
+    battle_judgement
   end
   
   private
@@ -35,21 +35,22 @@ class GamesController
   end
 
   def battle_judgement
-    if brave_win?
-      result = caluculate_of_exp_and_gold
-      puts "#{@brave.name}は戦いに勝った"
-      puts "#{result[:exp]}の経験値と#{result[:gold]}ゴールドを手に入れた"
-    else
-      puts "#{@brave.name}は戦いに負けた"
-    end
+    result = caluculate_of_exp_and_gold
+
+    end_message(result)
   end
 
   def caluculate_of_exp_and_gold
-    exp = (@monster.offense + @monster.defense) * EXP_CONS
-    gold = (@monster.offense + @monster.defense) * GOLD_CONS
-    result = {exp: exp, gold: gold}
+    if brave_win?
+      brave_win_flag = true
+      exp = (@monster.offense + @monster.defense) * EXP_CONS
+      gold = (@monster.offense + @monster.defense) * GOLD_CONS
+    else
+      brave_win_flag = false
+      exp = 0
+      gold = 0
+    end
 
-    result
+    {brave_win_flag: brave_win_flag, exp: exp, gold: gold}
   end
-
 end
